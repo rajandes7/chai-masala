@@ -1,0 +1,8 @@
+---
+import { url } from '../lib/url';
+// In a post: <CalcCallout /> or <CalcCallout>custom text</CalcCallout>
+---
+<aside class="not-prose my-8 rounded-xl bg-cream-deep p-5 flex flex-wrap items-center justify-between gap-3">
+  <p class="font-display text-lg font-bold"><slot>Different pot? Scale it.</slot></p>
+  <a href={url('calculator')} class="btn !py-2">Calculator</a>
+</aside>

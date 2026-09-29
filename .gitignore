@@ -1,0 +1,15 @@
+# build output
+dist/
+# generated types
+.astro/
+# dependencies
+node_modules/
+# logs
+npm-debug.log*
+# env
+.env
+.env.production
+# macOS
+.DS_Store
+.idea/
+# NOTE: brand/ and any source-material folders are intentionally tracked.

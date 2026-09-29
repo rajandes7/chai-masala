@@ -1,0 +1,56 @@
+---
+title: Why the same recipe tastes different in a different pot
+description: Evaporation follows the pot's surface, not the volume.
+pubDate: 2026-09-29
+tags: [Science, Tool]
+startHere: true
+---
+import Calculator from '../../components/Calculator.astro';
+import { CAL, k, vesselArea, leafAbsPerG } from '../../lib/chai';
+
+export const startVol = CAL.waterStart + CAL.milkStart;
+export const wideEvap = k * vesselArea(14.75 * 2) * (CAL.boilTimeWater + CAL.boilTimeMilk);
+export const wideYield = startVol - wideEvap - leafAbsPerG * CAL.teaDry;
+
+Scaling chai isn't "multiply everything." Liquid evaporates from the surface, and surface area grows with the square of the radius. Double the pot's diameter and evaporation quadruples. Double the recipe and the liquid only doubles.
+
+## Same recipe, twice the pot
+
+The calibration recipe ({startVol} ml, {CAL.teaDry} g tea), boiled for the same {CAL.boilTimeWater + CAL.boilTimeMilk} minutes:
+
+| | 14.75 cm pot | 29.5 cm pot |
+|---|---|---|
+| Lost to evaporation | {CAL.evapLoss} ml | {Math.round(wideEvap)} ml |
+| Ends up in the cup | {CAL.finalVolume} ml | {Math.round(wideYield)} ml |
+| Strength | 1× | {(CAL.finalVolume / wideYield).toFixed(1)}× |
+
+*Computed from the calibration constants, not measured.*
+
+## So boil time is an output
+
+Given the cup you want and the pot you have, solve for the boil:
+
+`boil time = target loss ÷ (k × pot area)`
+
+*k* ≈ {k.toFixed(3)} ml/min/cm², measured on my setup (glasstop, high, aluminum). Bigger pot, shorter boil.
+
+## The 2-minute floor
+
+Wagh Bakri is CTC: fine granules, fast extraction. It still needs at least 2 minutes at a rolling boil. In a very wide pot the calculator holds the boil at 2 minutes and starts with more liquid instead. Milk's casein binds tannins, which keeps the bitterness in check.
+
+## What stays fixed
+
+Same cup at any size means the same concentrations:
+
+| | mg/ml |
+|---|---|
+| Tea solids (~32.5% extracted) | 8.0 |
+| Sugar | 24.7 |
+| Milk fat | 11.4 |
+| Milk protein | 19.3 |
+
+## Try it
+
+<div class="not-prose my-8"><Calculator /></div>
+
+No spices yet. They scale linearly with the tea.

@@ -1,0 +1,82 @@
+---
+// Markup ported from chai_scaling_calculator.html (same inputs, ids, defaults, limits).
+// Math lives in src/lib/chai.ts; it is unchanged from the original.
+---
+<div class="calc" id="chai-calculator">
+  <p class="calc-label">Your Vessel + Servings</p>
+  <div class="calc-inputs">
+    <div>
+      <label for="diameter">Diameter</label>
+      <div class="calc-input-row">
+        <input type="number" id="diameter" value="14.75" min="5" max="60" step="0.5" />
+        <span class="unit">cm</span>
+      </div>
+    </div>
+    <div>
+      <label for="height">Height</label>
+      <div class="calc-input-row">
+        <input type="number" id="height" value="12" min="5" max="50" step="0.5" />
+        <span class="unit">cm</span>
+      </div>
+    </div>
+    <div>
+      <label for="servings">Servings</label>
+      <div class="calc-input-row">
+        <input type="number" id="servings" value="1.62" min="0.5" max="20" step="0.01" />
+        <span class="unit">× 250ml</span>
+      </div>
+    </div>
+  </div>
+  <p class="calc-hint">Measure your pot's inner diameter. Height is used to check the batch fits safely.</p>
+  <button type="button" class="btn" id="calc-btn">Generate Recipe</button>
+
+  <div class="calc-results" id="results" aria-live="polite">
+    <p class="calc-label">Total Cook Time</p>
+    <div id="time-bar"></div>
+
+    <p class="calc-label">Ingredients</p>
+    <div class="calc-grid" id="recipe-grid"></div>
+
+    <p class="calc-label">Instructions</p>
+    <ol class="calc-steps" id="instructions"></ol>
+
+    <p class="calc-label">Liquid Losses</p>
+    <div class="calc-losses" id="loss-breakdown"></div>
+
+    <p class="calc-label">Final Concentrations</p>
+    <div id="concentrations"></div>
+
+    <p class="calc-label">Vessel Check</p>
+    <div class="calc-sanity" id="sanity"></div>
+
+    <p class="calc-footnote">
+      Formula calibrated from a single 405ml cup: 250ml water, 230ml 2% milk, 10g Wagh Bakri tea, 10g sugar.
+      Evaporation constant k = 0.129 ml/min/cm². Milk boil capped at 1 min (2–3 rises).
+      Heating time estimated from calibration: ~1 min per 83ml water, ~1 min per 58ml cold milk.
+      Total time cap: 15 min. Minimum rolling boil: 2 min for full CTC extraction.
+    </p>
+  </div>
+</div>
+
+<script>
+  import { compute, render } from '../lib/chai';
+
+  const $ = (id: string) => document.getElementById(id)!;
+  const num = (id: string) => parseFloat(($(id) as HTMLInputElement).value);
+
+  function calculate() {
+    const r = compute(num('diameter'), num('height'), num('servings'));
+    if (!r) return;
+    const out = render(r);
+    $('time-bar').innerHTML = out.timeBar;
+    $('recipe-grid').innerHTML = out.recipeGrid;
+    $('instructions').innerHTML = out.instructions;
+    $('loss-breakdown').innerHTML = out.losses;
+    $('concentrations').innerHTML = out.concentrations;
+    $('sanity').innerHTML = out.sanity;
+    $('results').classList.add('is-visible');
+  }
+
+  $('calc-btn').addEventListener('click', calculate);
+  calculate();
+</script>

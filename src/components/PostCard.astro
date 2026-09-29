@@ -1,0 +1,17 @@
+---
+import type { Post } from '../lib/posts';
+import { formatDate } from '../lib/posts';
+import { url } from '../lib/url';
+interface Props { post: Post }
+const { post } = Astro.props;
+const { title, description, pubDate, tags, placeholder } = post.data;
+---
+<li class="py-5 border-b border-cream-deep">
+  <h3 class="text-2xl font-bold"><a href={url(`blog/${post.id}`)} class="hover:text-cinnamon">{title}</a></h3>
+  <p class="mt-1 text-sm text-chai-soft">
+    <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+    {placeholder && <span class="tag is-placeholder ml-2">Placeholder</span>}
+    {tags.map((t) => <span class="tag ml-2">{t}</span>)}
+  </p>
+  <p class="mt-2">{description}</p>
+</li>

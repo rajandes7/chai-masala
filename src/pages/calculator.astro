@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Calculator from '../components/Calculator.astro';
+import { url } from '../lib/url';
+---
+<Layout title="Calculator" description="Scale one cup of chai to any pot: enter diameter, height and servings.">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-10 md:py-14">
+    <h1 class="text-3xl md:text-4xl font-bold">Chai scaling calculator</h1>
+    <p class="mt-2 mb-8 text-chai-soft">Your pot, your servings. <a class="text-cinnamon underline" href={url('blog/why-the-same-recipe-tastes-different-in-a-different-pot')}>Why it works</a></p>
+    <Calculator />
+    <p class="mt-4 text-sm text-chai-soft">No spices yet. Scale them with the tea.</p>
+  </div>
+</Layout>

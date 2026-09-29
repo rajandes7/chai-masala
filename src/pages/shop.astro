@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Placeholder from '../components/Placeholder.astro';
+import PostCard from '../components/PostCard.astro';
+import { product } from '../config';
+import { getPosts } from '../lib/posts';
+
+const posts = await getPosts();
+const related = posts.filter((p) => p.data.tags.some((t) => ['Blend', 'Tasting'].includes(t)));
+const buyReady = Boolean(product.stripeUrl);
+---
+<Layout title="Masala" description="The chai masala that came out of the tastings.">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-10 md:py-14">
+    <Placeholder label="the masala blend" tone="green" class="aspect-[16/9]" />
+    <h1 class="mt-8 text-3xl md:text-4xl font-bold">{product.name}</h1>
+    <p class="mt-2 text-lg text-chai-soft">The blend that came out of the tastings.</p>
+    {product.ingredients && <p class="mt-4"><strong>Ingredients:</strong> {product.ingredients}</p>}
+    {(product.size || product.price) && (
+      <p class="mt-4 text-2xl font-display font-bold">{product.price} <span class="text-base font-sans font-normal text-chai-soft">{product.size}</span></p>
+    )}
+    <div class="mt-6">
+      {buyReady
+        ? <a class="btn" href={product.stripeUrl} rel="noopener">Buy now</a>
+        : <span class="btn" role="link" aria-disabled="true">Coming soon</span>}
+    </div>
+
+    {related.length > 0 && (
+      <section class="mt-14" aria-labelledby="how">
+        <h2 id="how" class="eyebrow">How it came about</h2>
+        <ul>{related.map((p) => <PostCard post={p} />)}</ul>
+      </section>
+    )}
+  </div>
+</Layout>

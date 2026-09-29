@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PostCard from '../components/PostCard.astro';
+import BoilOver from '../components/BoilOver.astro';
+import { site } from '../config';
+import { getPosts } from '../lib/posts';
+
+const posts = await getPosts();
+const startHere = posts.filter((p) => p.data.startHere);
+const recent = posts.filter((p) => !p.data.startHere);
+---
+<Layout>
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-10 md:py-14">
+    <div class="mx-auto max-w-sm"><BoilOver /></div>
+    <h1 class="sr-only">{site.name}</h1>
+    <p class="mt-4 text-center text-xl text-chai-soft">{site.tagline}</p>
+
+    {startHere.length > 0 && (
+      <section class="mt-10" aria-labelledby="start">
+        <h2 id="start" class="eyebrow">Start here</h2>
+        <ul>{startHere.map((p) => <PostCard post={p} />)}</ul>
+      </section>
+    )}
+
+    {recent.length > 0 && (
+      <section class="mt-10" aria-labelledby="recent">
+        <h2 id="recent" class="eyebrow">Recent</h2>
+        <ul>{recent.map((p) => <PostCard post={p} />)}</ul>
+      </section>
+    )}
+  </div>
+</Layout>

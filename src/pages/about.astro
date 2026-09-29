@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { site } from '../config';
+---
+<Layout title="About" description="Who writes this, and why.">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-10 md:py-14">
+    <div class="flex flex-wrap items-center gap-6">
+      <Placeholder label="portrait" tone="orange" class="w-28 h-28 !rounded-full shrink-0" />
+      <h1 class="text-3xl md:text-4xl font-bold">Hi, I'm [Your Name].</h1>
+    </div>
+    <div class="prose prose-post mt-8 max-w-none">
+      <p class="not-prose inline-block rounded-lg border-2 border-dashed border-turmeric bg-[#fdf1d3] px-3 py-1 text-sm text-[#7a4a00]"><strong>Placeholder text.</strong></p>
+      <p>[Who you are, in a sentence or two.]</p>
+      <p>[How chai got into your life.]</p>
+      <p>[The moment you started measuring instead of guessing.]</p>
+      <p><a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></p>
+    </div>
+  </div>
+</Layout>

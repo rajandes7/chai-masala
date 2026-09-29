@@ -1,0 +1,31 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { getPosts, formatDate, readingTime } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, updatedDate, tags, heroImage, heroAlt } = post.data;
+const og = heroImage ? (await getImage({ src: heroImage, width: 1200, height: 630, format: 'png' })).src : undefined;
+---
+<Layout title={title} description={description} image={og} type="article" pubDate={pubDate}>
+  <article class="mx-auto max-w-3xl px-4 sm:px-6 py-10 md:py-14">
+    <h1 class="text-3xl md:text-5xl font-bold">{title}</h1>
+    <p class="mt-3 text-sm text-chai-soft">
+      <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+      {updatedDate && <>{' · '}updated <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time></>}
+      {' · '}{readingTime(post)} min
+      {tags.map((t) => <span class="tag ml-2">{t}</span>)}
+    </p>
+    {heroImage && <Image src={heroImage} alt={heroAlt} width={1200} class="mt-8 rounded-2xl w-full" />}
+    <div class="prose prose-post mt-8 max-w-none">
+      <Content />
+    </div>
+  </article>
+</Layout>

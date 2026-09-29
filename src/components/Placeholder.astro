@@ -1,0 +1,14 @@
+---
+// PLACEHOLDER imagery — replace with real photography (drop files in src/assets and use <Image>).
+interface Props { label: string; class?: string; tone?: 'brown' | 'green' | 'orange' }
+const { label, class: cls = '', tone = 'brown' } = Astro.props;
+const bg = {
+  brown: 'from-[#6b4a34] to-[#3b2416]',
+  green: 'from-[#6f8f5c] to-[#34502a]',
+  orange: 'from-[#e0a020] to-[#a94a17]',
+}[tone];
+---
+<figure class={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${bg} ${cls}`} role="img" aria-label={`Placeholder photo: ${label}`}>
+  <svg viewBox="0 0 64 64" class="absolute inset-0 m-auto w-1/4 opacity-25 text-white" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 26h32v8c0 9-6 15-16 15s-16-6-16-15z"/><path d="M46 29h4a5 5 0 0 1 0 10h-5"/><path d="M24 22c-2-3 2-4 0-8M32 22c-2-3 2-4 0-8M40 22c-2-3 2-4 0-8"/></svg>
+  <figcaption class="absolute bottom-3 left-4 right-4 text-xs text-white/80">Placeholder photo · {label}</figcaption>
+</figure>
